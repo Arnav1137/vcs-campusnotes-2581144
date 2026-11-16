@@ -1,0 +1,10 @@
+#!/bin/sh
+# pre-commit: reject the commit if a staged file has a to-do or fix-me marker
+files=$(git diff --cached --name-only --diff-filter=ACM)
+for f in $files; do
+  if git show ":$f" | grep -E "TO[D]O|FIXM[E]" > /dev/null; then
+    echo "COMMIT REJECTED: $f contains a TO-DO or FIX-ME marker. Remove it and try again."
+    exit 1
+  fi
+done
+exit 0

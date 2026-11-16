@@ -1,0 +1,14 @@
+#!/bin/sh
+# commit-msg: message must be at least 10 chars and start with a Conventional Commit prefix
+msg=$(head -n 1 "$1")
+if [ ${#msg} -lt 10 ]; then
+  echo "COMMIT REJECTED: message is shorter than 10 characters."
+  exit 1
+fi
+case "$msg" in
+  feat:*|fix:*|docs:*|refactor:*|chore:*) exit 0 ;;
+  *)
+    echo "COMMIT REJECTED: message must start with feat:, fix:, docs:, refactor: or chore:"
+    exit 1
+    ;;
+esac
